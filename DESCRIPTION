@@ -1,0 +1,18 @@
+Package: mist
+Title: Mass Spectrometry Interaction Statistics
+Version: 1.0.0.9000
+Authors@R: person("Erik", "Verschueren", email = "erik.verschueren@gmail.com", role = c("aut", "cre"))
+Description: Ranks biologically relevant interactions in high-throughput AP-MS datasets
+Depends: R (>= 3.2.2)
+License: MIT + file LICENSE.md
+LazyData: true
+Imports:
+    getopt,
+    yaml,
+    optparse,
+    pheatmap,
+    reshape2,
+    ggplot2,
+    RColorBrewer
+Suggests:
+    testthat
