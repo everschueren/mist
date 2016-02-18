@@ -131,7 +131,7 @@ preprocess.createMatrix <- function(y, collapse_file, exclusions_file, remove_fi
         cat(sprintf("\tPREY IDENTIFIER COLUMN %s NOT FOUND\n\t\tPLEASE CHECK DATA FILE\n", prey_colname))
         quit()
     } else {
-        datmat <- dcast(y, prey_colname ~ id_colname + BAIT, value.var = c("pepcount_colname"), sum)
+        datmat <- reshape2::dcast(y, prey_colname ~ id_colname + BAIT, value.var = c("pepcount_colname"), sum)
     }
     
     # get 'Lengths' (molecular weights)
@@ -257,12 +257,3 @@ preprocess.main <- function(data_file, keys_file, output_file, filter_data, cont
     
     return(matrix_output_file)
 }
-# if(!exists('PIPELINE') || PIPELINE==F){ option_list <- list( make_option(c('-d', '--data_file'), help='data
-# file containing values'), make_option(c('-k', '--keys_file'), help='keys file containing bait names'),
-# make_option(c('-o', '--output_file'), help='output file'), make_option(c('-a', '--collapse_file'),
-# help='collapse file'), make_option(c('-b', '--exclusions_file'), help='exclusions file'),
-# make_option(c('-e', '--remove_file'), help='remove file'), make_option(c('-g', '--filter_data'),
-# help='filter out common contaminants first'), make_option(c('-r', '--remove_carryover'), help='prints
-# potential carryover to file'), make_option(c('-s', '--nupsc_flag'), help='the column name of the
-# quantifiable value used to score data (num unique peptides or spectral count)') ) parsedArgs =
-# parse_args(OptionParser(option_list = option_list), args = commandArgs(trailingOnly=T)) } 

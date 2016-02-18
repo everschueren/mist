@@ -46,23 +46,10 @@ qc.ipDists = function(data_matrix, ip_baits, baseName) {
     data_long = merge(tmp, ip_baits, by = "ip")
     data_long = data_long[data_long$count > 0, ]
     theme_set(theme_bw(base_size = 12, base_family = "Helvetica"))
-    # pdf(gsub('.txt','_proteincounts.pdf',baseName), width=10,
-    # height=(ceiling(length(unique(data_long$bait))/20)*8) ) pdf(gsub('.txt','_proteincounts.pdf',baseName),
-    # width=10, height=(ceiling(length(unique(data_long$bait))/20)*8))
-    p = ggplot(data_long, aes(x = ip)) + geom_bar(stat = "bin") + facet_wrap(facets = ~bait, scales = "free_x", 
+    p = ggplot(data_long, aes(x = ip)) + geom_bar() + facet_wrap(facets = ~bait, scales = "free_x", 
         ncol = 10) + theme(axis.text.x = element_text(angle = 45, hjust = 1))
     # dev.off()
-    ggsave(filename = gsub(".txt", "_proteincounts.pdf", baseName), plot = p, scale = length(unique(data_long$bait))/10, 
-        limitsize = FALSE)
-    
-    ## solution with ggplot ggplot(data_long, aes(x=log2(count), colour=factor(replicate))) + geom_density(alpha=1,
-    ## size=1) + facet_wrap(facets= ~bait, scales='fixed')
-    
-    ## solution to give every plot its separate legend with gridExtra library
-    ## pdf(gsub('.txt','_peptidecount_dists.pdf',baseName), width=30, height=30) out = by(data = data_long, INDICES
-    ## = data_long$bait, FUN = function(m) { m = droplevels(m) #print(m) bait_title = unique(m$bait) m = ggplot(m,
-    ## aes(x=count, colour=ip)) + geom_density(alpha=1, size=1) + ggtitle(bait_title) ## +
-    ## theme(legend.title=element_text(unique(m$bait))) }) do.call(grid.arrange, out) dev.off()
+    ggsave(filename = gsub(".txt", "_proteincounts.pdf", baseName), plot = p)
 }
 
 qc.NumUniquePlot <- function(ip_matrix, matrix_file) {
@@ -103,15 +90,3 @@ qc.main = function(matrix_file, font_scale, cluster = T, ip_dists = T) {
         qc.NumUniquePlot(ip_matrix, matrix_file)
     }
 }
-
-# if(!exists('PIPELINE') || PIPELINE==F){ option_list <- list( make_option(c('-v', '--verbose'),
-# action='store_true', default=TRUE, help='Print extra output [default]'), make_option(c('-q', '--quietly'),
-# action='store_false', dest='verbose', help='Print little output'), make_option(c('-d', '--data_file'),
-# help='data file containing matrix'), make_option(c('-o', '--output_file'), help='output file for cluster
-# plot'), make_option(c('-s', '--font_scale'), default=40, help='scaling factor for fonts on the rows and
-# columns') ) parsedArgs = parse_args(OptionParser(option_list = option_list), args =
-# commandArgs(trailingOnly=T)) } TODO: make the following code into a unit-test config =
-# yaml.load(string=paste(readLines('tests/APMS_TEST.yml'),collapse='\n')) config =
-# yaml.load(string=paste(readLines('tests/entero/APMS_ENTERO.yml'),collapse='\n'))
-# qc.main(matrix_file=config$qc$matrix_file, font_scale=config$qc$cluster_font_scale,
-# cluster=config$qc$cluster, ip_dists=config$qc$ip_distributions) 

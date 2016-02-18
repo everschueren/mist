@@ -1,2 +1,0 @@
-VIF	VIF_group
-VIF+	VIF_group

@@ -1,62 +1,28 @@
-
-spec = matrix(c("verbose", "v", 2, "integer", "", "help", "h", 0, "logical", "available arguments (this screen)", 
-    "config", "c", 1, "character", "configuration file in YAML format"), byrow = TRUE, ncol = 5)
-
-opt = getopt(spec = spec, opt = commandArgs(TRUE), command = get_Rscript_filename(), usage = FALSE, debug = FALSE)
-
-# if help was asked for print a friendly message and exit with a non-zero error code
-if (!is.null(opt$help)) {
-    cat(getopt(spec, usage = TRUE))
-    q(status = 1)
-}
-
-# set source directory
-args <- commandArgs(trailingOnly = F)
-scriptPath <- normalizePath(dirname(sub("^--file=", "", args[grep("^--file=", args)])))  # get the path to where main.R is located
-
 # some qc to make sure config file exists and is well formatted
-getConfig <- function(config_file) {
+readMistConfig <- function(config_file) {
     if (!file.exists(config_file)) {
-        stop(cat(paste("ERROR!!! The yml configuration file:\n\t", paste(getwd(), config_file, sep = "/"), "\ndoes not exist. Please enter a correct path/filename.\n", 
-            sep = "")), call. = F)
+        stop(cat(sprintf("MIST PIPELINE ERROR: YAML file %s does not exist\n", config_file)), call. = F)
     }
     
-    x = readLines(config_file)
-    x = x[x != ""]  #remove \n\n cases (blank Lines)
-    x = gsub(":  ", ": ", gsub(":", ": ", x))  # make sure there is a space between ':' and any character
-    x = gsub("\t", "  ", x)
-    config = paste(x, collapse = "\n")
-    config = tryCatch(yaml.load(config), error = function(e) {
-        print("!!! Error loading the config file. Please make sure the file follows YAML format.")
+#     x = readLines(config_file)
+#     x = x[x != ""]  #remove \n\n cases (blank Lines)
+#     x = gsub(":  ", ": ", gsub(":", ": ", x))  # make sure there is a space between ':' and any character
+#     x = gsub("\t", "  ", x)
+#     config = paste(x, collapse = "\n")
+    config <- tryCatch(yaml::yaml.load_file(config_file), error = function(e) {
+        print("MIST PIPELINE ERROR: YAML config file could not be loaded.")
         stop()
     })
-    
-    # check formatting of config file
-    config = formatConfig(config)
     return(config)
 }
 
-# chec out YAML config file and make sure it's setup properly
-formatConfig = function(config) {
-    # replace any spaces in the colname with a '.' to match how R reads in headers with spaces.
-    config$preprocess$ip_colname <- gsub(" ", ".", config$preprocess$ip_colname)
-    config$preprocess$prey_colname <- gsub(" ", ".", config$preprocess$prey_colname)
-    config$preprocess$pepcount_colname <- gsub(" ", ".", config$preprocess$pepcount_colname)
-    config$preprocess$mw_colname <- gsub(" ", ".", config$preprocess$mw_colname)
-    
-    return(config)
-}
-
-
-main <- function(opt) {
-    # read and qc config file
-    config = getConfig(opt$config)
+runMistPipeline <- function(config) {
     
     ## create an outputdir if it doesn't exist
     if (is.null(config$files$output_dir) || config$files$output_dir == "") 
         config$files$output_dir = sprintf("%s/processed/", getwd())
     
-    dir.create(config$files$output_dir, showWarnings = T)
+    if(!dir.exists(config$files$output_dir)) dir.create(config$files$output_dir, showWarnings = T)
     
     ## main switches between parts of the pipeline
     if (config$preprocess$enabled) {

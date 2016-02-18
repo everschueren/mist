@@ -1,15 +1,15 @@
 files:
-  data : tests/small/input/data.txt
-  keys : tests/small/input/keys.txt
-  remove : tests/small/input/remove.txt
-  collapse : tests/small/input/collapse.txt
-  specificity_exclusions : tests/small/input/specificity_exclusions.txt
-  output_dir : tests/small/processed
+  data : ../../inst/extdata/small/input/data.txt
+  keys : ../../inst/extdata/small/input/keys.txt
+  remove : ../../inst/extdata/small/input/remove.txt
+  collapse : ../../inst/extdata/small/input/collapse.txt
+  specificity_exclusions : ../../inst/extdata/small/input/specificity_exclusions.txt
+  output_dir : ../../inst/extdata/small/processed
 preprocess:
   enabled : 1
   remove_carryover : 1
   filter_contaminants : 1
-  contaminants_file : files/contaminants.txt
+  contaminants_file : ../../inst/extdata/contaminants.txt
   id_colname : id
   prey_colname : ms_uniprot_ac
   pepcount_colname : ms_num_unique_peptide 

@@ -1,8 +1,9 @@
 
 # simplify/convert data into workable form
 mist.processMatrix <- function(x) {
-    info = data.frame(Ip = colnames(x)[5:dim(x)[2]], Bait = as.vector(t(x[1, 5:dim(x)[2]])), Specificity_exclusion = as.vector(t(x[2, 
-        5:dim(x)[2]])), stringsAsFactors = F)
+    info = data.frame(Ip = colnames(x)[5:dim(x)[2]], 
+                      Bait = as.vector(t(x[1, 5:dim(x)[2]])), 
+                      Specificity_exclusion = as.vector(t(x[2, 5:dim(x)[2]])), stringsAsFactors = F)
     x <- x[-c(1:2), ]
     names(x)[1:3] <- c("Preys", "PepAtlas", "Length")
     row.names(x) <- x$Preys
