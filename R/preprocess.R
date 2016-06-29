@@ -210,11 +210,11 @@ preprocess.main <- function(data_file, keys_file, output_file, filter_data, cont
     keys$BAIT = gsub(" ", "", keys$BAIT)
     
     # quality control TO DO GIT ISSUE #1
-    if (class(df[, 3]) == "character") {
+    if (class(df[, pepcount_colname]) == "character") {
         cat("\t!!! CHARACTERS FOUND IN unique_pep COLUMN. CONVERTING TO NUMERIC.\n")
-        df[, 3] = as.numeric(df[, 3])
+        df[, pepcount_colname] = as.numeric(df[, pepcount_colname])
     }
-    df <- df[which(df[, 3] > 0 | is.na(df[, 3]) | df[, 3] == ""), ]  # remove ms_unique_pep <= 0
+    df <- df[which(df[, pepcount_colname] > 0 | is.na(df[, pepcount_colname]) | df[, pepcount_colname] == ""), ]  # remove ms_unique_pep <= 0
     df <- preprocess.removeDuplicates(df, id_colname, prey_colname)
     
     # filter contaminants out
