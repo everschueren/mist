@@ -1,0 +1,31 @@
+files:
+  data: MiST_input/20160623/HA_data.txt
+  keys: MiST_input/20160623/HA_keys.txt
+  remove: ~
+  collapse: ~
+  specificity_exclusions: ~
+  output_dir: MiST_result
+preprocess:
+  enabled: 1
+  remove_carryover: 1
+  filter_contaminants: 1
+  contaminants_file: MiST_input/contaminants.txt
+  id_colname: id_subject
+  prey_colname: protmeta_accession
+  pepcount_colname: spectral_counts
+  mw_colname: protmeta_protein_weight
+qc:
+  enabled: 1
+  matrix_file: ~
+  cluster: 1
+  cluster_font_scale: 5
+  ip_distributions: 1
+mist:
+  enabled: 1
+  matrix_file: ~
+  weights: fixed
+  training_file: ~
+  reproducibility: 0.30853
+  specificity: 0.68551
+  abundance: 0.00596
+
