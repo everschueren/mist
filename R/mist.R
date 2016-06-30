@@ -181,15 +181,17 @@ mist.main <- function(matrix_file, weights = "fixed", w_R = 0.30853, w_A = 0.005
         print(sprintf("unrecognized MIST option: %s", weights))
     }
     
-    ## per bait get all IPs the prey was found in
-    ip_occurences = mist.getSampleOccurences(m3d_norm, info)
+    # ## per bait get all IPs the prey was found in
+    # ip_occurences = mist.getSampleOccurences(m3d_norm, info)
+    # 
+    # if (nrow(ip_occurences) != nrow(results)) {
+    #     print(" ERROR : INCONSISTENCY BETWEEN SCORE MATRIX AND IP OCCURENCE MATRIX ")
+    # }
+    # 
+    # results_with_samples = merge(results, ip_occurences, by = c("Bait", "Prey"))
+    # results_with_samples
     
-    if (nrow(ip_occurences) != nrow(results)) {
-        print(" ERROR : INCONSISTENCY BETWEEN SCORE MATRIX AND IP OCCURENCE MATRIX ")
-    }
-    
-    results_with_samples = merge(results, ip_occurences, by = c("Bait", "Prey"))
-    results_with_samples
+    results
 }
 
 # if(!exists('PIPELINE') || PIPELINE==F){ option_list <- list( make_option(c('-d', '--data_file'), help='data
