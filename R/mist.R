@@ -87,6 +87,7 @@ mist.getSpecificity <- function(abundance, info) {
         bait <- colnames(abundance)[i]
         # find baits to exclude in exclusions list
         baits_to_exclude = unique(info[info$Bait == bait, "Specificity_exclusion"])
+        baits_to_exclude <- strsplit(baits_to_exclude, split = "\\|")
         baits_to_exclude = setdiff(baits_to_exclude, bait)
         baits_to_include = setdiff(colnames(abundance), baits_to_exclude)
         
