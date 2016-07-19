@@ -145,7 +145,7 @@ mist.getSampleOccurences = function(m3d_norm, info) {
 # scores$Specificity*0.68551 )
 
 mist.main <- function(matrix_file, weights = "fixed", w_R = 0.30853, w_A = 0.00596, w_S = 0.68551, training_file, 
-    training_steps = 0.1) {
+    training_steps = 0.1, controls) {
     dat <- read.delim(matrix_file, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
     dat <- mist.processMatrix(dat)
     m3d_norm <- mist.getM3D_normalized(dat[[1]])
@@ -156,7 +156,7 @@ mist.main <- function(matrix_file, weights = "fixed", w_R = 0.30853, w_A = 0.005
     A <- mist.vectorize(dat[[2]])
     S <- mist.vectorize(dat[[3]])
     
-    metrics = data.frame(Bait = A$Bait, Prey = A$Prey, Abundance = A$Xscore, Reproducibility = R$Xscore, Specificity = S$Xscore)
+    metrics = data.frame(Bait = A$Bait, Prey = A$Prey, Abundance = A$Xscore, Reproducibility = R$Xscore, Specificity = S$Xscore, stringsAsFactors = F)
     ## only retain non-zero results
     metrics = metrics[metrics$Abundance > 0, ]
     ## for debug purposes output_file <- gsub('.txt', '_MIST_METRICS.txt', matrix_file) write.table(metrics,
@@ -170,10 +170,8 @@ mist.main <- function(matrix_file, weights = "fixed", w_R = 0.30853, w_A = 0.005
     } else if (weights == "training") {
         training_set = read.delim(training_file, header = F, stringsAsFactors = F)
         colnames(training_set) = c("Bait", "Prey")
-        output_file <- paste(dirname(matrix_file), "prediction_rates.txt", sep = "/")
-        training_weights = mist.train.main(metrics, training_set, output_file, training_steps)
-        cat(sprintf("\tWEIGHTS BASED ON TRAINING SET:\n\t  REPRODUCIBILITY: %s\n\t  ABUNDANCE: %s\n\t  SPECIFICITY: %s\n", 
-            training_weights$R, training_weights$A, training_weights$S))
+        output_file <- paste(dirname(matrix_file), "prediction_rates_", sep = "/")
+        training_weights = mist.train.main(metrics, training_set, output_file, training_steps, controls)
         mist_scores = metrics$Reproducibility * training_weights$R + metrics$Abundance * training_weights$A + 
             metrics$Specificity * training_weights$S
         results = data.frame(metrics, MIST = mist_scores)

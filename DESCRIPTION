@@ -10,7 +10,10 @@ Depends: R (>= 3.2.2),
     pheatmap,
     reshape2,
     ggplot2,
-    RColorBrewer
+    RColorBrewer, 
+    data.table,
+    dplyr,
+    caTools
 License: MIT + file LICENSE.md
 LazyData: true
 Imports:
@@ -20,6 +23,9 @@ Imports:
     pheatmap,
     reshape2,
     ggplot2,
-    RColorBrewer
+    RColorBrewer,
+    data.table,
+    dplyr, 
+    caTools
 Suggests:
     testthat

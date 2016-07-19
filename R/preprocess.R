@@ -120,7 +120,7 @@ preprocess.createMatrix <- function(y, collapse_file, exclusions_file, remove_fi
     } else if (!(file.exists(remove_file)) | (file.info(remove_file)$isdir)) {
         cat("\tREMOVE FILE DOES NOT EXIST. NOT USING REMOVE FEATURE.\n")
     } else {
-        cat("\tRemove file is empty\n")
+        cat("\tREMOVE FILE IS EMPTY\n")
     }
     
     # Create matrix using either 'number of unique peptides' or 'spectral count'
@@ -154,7 +154,6 @@ preprocess.createMatrix <- function(y, collapse_file, exclusions_file, remove_fi
     # handle exclusions
     if (file.info(exclusions_file)$size > 0) {
         exclusions <- unique(read.delim(exclusions_file, sep = "\t", header = F, stringsAsFactors = FALSE))
-        
         # if multiple instances of bait in col1, combine all of the col2 exclusions
         if (any(duplicated(exclusions[, 1]))) {
             idx <- which(duplicated(exclusions[, 1]))
@@ -172,7 +171,7 @@ preprocess.createMatrix <- function(y, collapse_file, exclusions_file, remove_fi
         idx <- which(is.na(ips[, 3]))
         ips[idx, 3] = ips[idx, 2]
     } else {
-        cat("\tExclusions file is empty\n")
+        cat("\tEXCLUSIONS FILE IS EMPTY\n")
         ips <- unique(y[, c("id_colname", "BAIT")])
         ips <- ips[order(ips$id_colname), ]
         ips$"PreyType/BaitCov" = ips$BAIT
@@ -181,7 +180,6 @@ preprocess.createMatrix <- function(y, collapse_file, exclusions_file, remove_fi
     # Create headers for matrix
     corner_titles = cbind(c("a", "b", "c", "IP"), c("a", "b", "c", "Bait"), c("Preys", "PepAtlas", "Length", "PreyType/BaitCov"))
     ips <- t(rbind(corner_titles, as.matrix(ips)))
-    
     return(list(ips, datmat))
     
 }

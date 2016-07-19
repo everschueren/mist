@@ -16,8 +16,7 @@ readMistConfig <- function(config_file) {
     return(config)
 }
 
-runMistPipeline <- function(config) {
-    
+runMistPipeline <- function(config, controls) {
     ## create an outputdir if it doesn't exist
     if (is.null(config$files$output_dir) || config$files$output_dir == "") 
         config$files$output_dir = sprintf("%s/processed/", getwd())
@@ -50,7 +49,7 @@ runMistPipeline <- function(config) {
         }
         mist.results = mist.main(matrix_file = matrix_file, weights = config$mist$weights, w_R = config$mist$reproducibility, 
             w_A = config$mist$abundance, w_S = config$mist$specificity, training_file = config$mist$training_file, 
-            training_steps = config$mist$training_steps)
+            training_steps = config$mist$training_steps, controls)
         output_file = gsub(".txt", "_MIST.txt", matrix_file)
         write.table(mist.results, output_file, row.names = FALSE, col.names = TRUE, quote = FALSE, sep = "\t")
     }
