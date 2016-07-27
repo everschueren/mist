@@ -1,7 +1,5 @@
 ## parameter grid
 
-# TO-DO: make k_folds, and controls configurable 
-
 mist.train.getParamGrid = function(steps = 0.1) {
     param_weight_detail = seq(from = 0, to = 1, by = 0.1)
     param_grid = expand.grid(param_weight_detail, param_weight_detail, param_weight_detail)
@@ -82,14 +80,6 @@ mist.train.getConfMat <- function(metrics, parameters, confusion_matrix) {
   
   return (confusion_matrix)
 }
-
-# for development purposes: pre-main
-# load("input_4kfoldsdev.RData")
-# training_set = read.delim(training_file, header = F, stringsAsFactors = F)
-# colnames(training_set) = c("Bait", "Prey")
-# output_file <- paste(dirname(matrix_file), "prediction_rates_", sep = "/")
-# k_folds <- 5
-# controls <- c("GFP_HA", "YAP_HA", "YAP_HA", "VECTOR_HA")
 
 mist.train.kfolds.label <- function(set, k_folds, label) {
   set <- sample_n(set, nrow(set))
